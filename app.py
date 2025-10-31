@@ -31,13 +31,13 @@ def safe_action(action_func, *args, max_retries=6, base_delay=5, **kwargs):
         except (ClientThrottled, FloodWaitError) as e:
             attempt += 1
             if attempt > max_retries:
-                return {}  # <-- возвращаем пустой результат вместо падения
+                return {}  # TODO: New add handler
             delay = base_delay * (2 ** (attempt - 1))
             print(f"⚠️ Rate limit / Flood detected. Жду {delay} сек. (попытка {attempt}/{max_retries})")
             time.sleep(delay)
         except ClientUnauthorizedError as e:
             print(f"⚠️ Игнорируем ClientUnauthorizedError: {e}")
-            return {}  # <-- возвращаем пустой результат
+            return {} # TODO: New add handler
         except ClientLoginRequired:
             raise
         except ClientError as e:
